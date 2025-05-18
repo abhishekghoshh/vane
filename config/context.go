@@ -12,12 +12,13 @@ type ServerContext struct {
 
 type ConfigContext struct {
 	Profiles string         `mapstructure:"profiles"`
-	Source   []ConfigSource `mapstructure:"source"`
+	Sources  []ConfigSource `mapstructure:"sources"`
 }
 
 type ConfigSource struct {
-	// Path string `mapstructure:"path"`
-	// Dir    string `mapstructure:"dir"`
-	// Git    string `mapstructure:"git"`
-	// Branch string `mapstructure:"branch"`
+	Path   string `mapstructure:"path,omitempty"`
+	Dir    string `mapstructure:"dir,omitempty"`
+	Git    string `mapstructure:"git,omitempty"`
+	Branch string `mapstructure:"branch,omitempty"`
+	Link   string `mapstructure:"link,omitempty"`
 }

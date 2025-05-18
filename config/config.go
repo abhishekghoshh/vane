@@ -2,6 +2,7 @@ package config
 
 import (
 	"errors"
+	"log"
 	"os"
 
 	"github.com/abhishekghoshh/config-client/config/loader"
@@ -55,6 +56,7 @@ func (config *Config) decode(key string, data any) error {
 	}
 	err := mapstructure.Decode(innerConfig, data)
 	if err != nil {
+		log.Printf("Error unmarshaling config: %v", err)
 		return errors.New("error in loading config for the key, " + key)
 	}
 	return nil

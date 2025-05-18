@@ -19,24 +19,26 @@ func LoadConfig(resourcesDir string, configName string) *viper.Viper {
 	}
 	keys := config.AllKeys()
 	for _, key := range keys {
-		val := get(config, key)
-		config.Set(key, val)
+		val := config.Get(key)
+		evaluatedVal := evaluate(val)
+		config.Set(key, evaluatedVal)
 	}
 	return config
 }
 
-func get(config *viper.Viper, key string) any {
-	val := config.Get(key)
-	return getEvalualtedValue(val)
-}
-
-func getEvalualtedValue(val any) string {
-	strVal, ok := val.(string)
-	if !ok {
-		return fmt.Sprintf("%v", val)
+func evaluate(val any) any {
+	if strVal, ok := val.(string); ok {
+		return evalualteString(strVal)
+	} else if listVal, ok := val.([]any); ok {
+		return evaluateList(listVal)
+	} else if mapVal, ok := val.(map[string]any); ok {
+		return evaluateMap(mapVal)
 	}
+	return val
+}
+func evalualteString(val string) string {
 	re := regexp.MustCompile(`\$\{([^}:]+)(:([^}]+))?\}`)
-	return re.ReplaceAllStringFunc(strVal, func(match string) string {
+	return re.ReplaceAllStringFunc(val, func(match string) string {
 		groups := re.FindStringSubmatch(match)
 		envKey := groups[1]
 		defaultVal := ""
@@ -52,4 +54,18 @@ func getEvalualtedValue(val any) string {
 		}
 		return defaultVal
 	})
+}
+
+func evaluateList(listVal []any) any {
+	for i, val := range listVal {
+		listVal[i] = evaluate(val)
+	}
+	return listVal
+}
+
+func evaluateMap(mapVal map[string]any) any {
+	for key, val := range mapVal {
+		mapVal[key] = evaluate(val)
+	}
+	return mapVal
 }

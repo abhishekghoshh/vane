@@ -7,7 +7,9 @@ import (
 )
 
 func main() {
-	cfg, appCtx := config.New()
-	fmt.Println(cfg.Get("app.name"))
-	fmt.Println(appCtx)
+	_, appCtx := config.New()
+	fmt.Println(appCtx.Name)
+	fmt.Println(appCtx.Server)
+	fmt.Println(appCtx.Config.Profiles)
+	fmt.Println(appCtx.Config.Sources)
 }

@@ -5,9 +5,10 @@ application:
     port: ${SERVER_PORT:8080}
   config:
     profiles: ${APPLICATION_PROFILES:dev}
-    source:
-    - path: "/opt/app/config/application.yml"
-    - dir: "/opt/cofig"
+    sources:
+    - path: "app-${APP_VERSION:v1}.yml"
+    - dir: "/opt/app/config"
     - git: "https://github.com/abhishekghoshh/config-client"
       dir: "/sample-config"
       branch: "main"
+    - link: https://raw.githubusercontent.com/abhishekghoshh/config-client/refs/heads/master/sample-config/app-1.yaml
