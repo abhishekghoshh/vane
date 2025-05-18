@@ -1,0 +1,13 @@
+application:
+  name: "my_app"
+  server:
+    host: "${SERVER_HOST:0.0.0.0}"
+    port: ${SERVER_PORT:8080}
+  config:
+    profiles: ${APPLICATION_PROFILES:dev}
+    source:
+    - path: "/opt/app/config/application.yml"
+    - dir: "/opt/cofig"
+    - git: "https://github.com/abhishekghoshh/config-client"
+      dir: "/sample-config"
+      branch: "main"
